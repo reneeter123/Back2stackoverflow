@@ -1,14 +1,13 @@
 // ==UserScript==
 // @name         Back2stackoverflow
-// @version      0.1.40
+// @version      0.1.41
 // @description  Redirect to stackoverflow.com from machine-translated sites
-// @namespace    taraflex
-// @author       taraflex.red@gmail.com
-// @run-at       document-end
-// @downloadURL  https://raw.githubusercontent.com/Taraflex/Back2stackoverflow/master/back2stackoverflow.user.js
-// @updateURL    https://raw.githubusercontent.com/Taraflex/Back2stackoverflow/master/back2stackoverflow.user.js
-// @homepageURL  https://github.com/Taraflex/Back2stackoverflow
-// @supportURL   https://github.com/Taraflex/Back2stackoverflow/issues
+// @namespace    https://github.com/reneeter123
+// @author       ReNeeter
+// @downloadURL  https://raw.githubusercontent.com/reneeter123/Back2stackoverflow/master/back2stackoverflow.user.js
+// @updateURL    https://raw.githubusercontent.com/reneeter123/Back2stackoverflow/master/back2stackoverflow.user.js
+// @homepageURL  https://github.com/reneeter123/Back2stackoverflow
+// @supportURL   https://github.com/reneeter123/Back2stackoverflow/issues
 // @grant        GM_xmlhttpRequest
 // @noframes
 // @match        https://stackoverflow.com/search?back2stackoverflow=*
@@ -122,6 +121,23 @@
 // @match        https://qarchive.ru/*
 // @match        https://coderoad.ru/*
 // @match        https://qastack.ru/*
+// @match        https://qastack.cn/*
+// @match        https://qastack.co.in/*
+// @match        https://qastack.com.br/*
+// @match        https://qastack.com.de/*
+// @match        https://qastack.com.ua/*
+// @match        https://qastack.fr/*
+// @match        https://qastack.id/*
+// @match        https://qastack.in.th/*
+// @match        https://qastack.info.tr/*
+// @match        https://qastack.it/*
+// @match        https://qastack.jp/*
+// @match        https://qastack.kr/*
+// @match        https://qastack.mx/*
+// @match        https://qastack.net.bd/*
+// @match        https://qastack.pl/*
+// @match        https://qastack.ru/*
+// @match        https://qastack.vn/*
 // @match        https://answeright.com/*
 // @match        https://www.answeright.com/*
 // @match        https://brokencontrollers.com/faq/*
@@ -154,8 +170,8 @@
 :host{
     position: fixed;
     bottom: 0;
-    z-index: 16777271; 
-    width: 100%; 
+    z-index: 16777271;
+    width: 100%;
     color: white;
     background-color: ${bgcolor};
 }
@@ -471,6 +487,26 @@ a{
             const uv = document.querySelector('input[name="url"]');
             //@ts-ignore
             return uv && uv.value;
+        case 'qastack.cn':
+        case 'qastack.co.in':
+        case 'qastack.com.br':
+        case 'qastack.com.de':
+        case 'qastack.com.ua':
+        case 'qastack.fr':
+        case 'qastack.id':
+        case 'qastack.in.th':
+        case 'qastack.info.tr':
+        case 'qastack.it':
+        case 'qastack.jp':
+        case 'qastack.kr':
+        case 'qastack.mx':
+        case 'qastack.net.bd':
+        case 'qastack.pl':
+        case 'qastack.ru':
+        case 'qastack.vn':
+            const url = new URL(document.querySelector('.text-muted > a:last-child').href);
+            url.pathname = url.pathname.replace(/^\/.+?\//, '/questions/');
+            return url.href;
         default:
             const cssSelectors = {
                 'kompsekret.ru': '.question-text > .a-link',
@@ -500,7 +536,6 @@ a{
                 'codeindex.ru': '.text-muted.small',
                 'husl.ru': '.source-link',
                 'qarchive.ru': 'cite > a',
-                'qastack.ru': '.text-muted > a:last-child',
                 'answeright.com': '.wrapper-question-card .v-card__actions > a:not(.edited-author-button):not(.category-question-button)',
 
                 'it-swarm.xyz': '.gat[data-cat="q-source"]',

@@ -2,9 +2,9 @@
 
 Userscript for redirect to stackoverflow.com from machine-translated sites.
 
-[Click to install](https://raw.githubusercontent.com/Taraflex/Back2stackoverflow/master/back2stackoverflow.user.js)
+[Click to install](https://raw.githubusercontent.com/reneeter123/Back2stackoverflow/master/back2stackoverflow.user.js)
 
-Required [Tampermonkey](https://tampermonkey.net/) or [Greasemonkey](https://www.greasespot.net/) or [Violentmonkey](https://violentmonkey.github.io/get-it/) or another browser extension for userscript support.
+Required [Tampermonkey](https://www.tampermonkey.net/) or [Greasemonkey](https://www.greasespot.net/) or [Violentmonkey](https://violentmonkey.github.io/) or another browser extension for userscript support.
 
 Supported sites:
 - ~~qaru.site~~ (closed?)
