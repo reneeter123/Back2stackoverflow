@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Back2stackoverflow
-// @version      0.1.41
+// @version      0.1.42
 // @description  Redirect to stackoverflow.com from machine-translated sites
 // @namespace    https://github.com/reneeter123
 // @author       ReNeeter
@@ -120,7 +120,6 @@
 // @match        https://www.myht.ru/question/*
 // @match        https://qarchive.ru/*
 // @match        https://coderoad.ru/*
-// @match        https://qastack.ru/*
 // @match        https://qastack.cn/*
 // @match        https://qastack.co.in/*
 // @match        https://qastack.com.br/*
