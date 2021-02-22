@@ -1,17 +1,20 @@
 // ==UserScript==
 // @name         Back2stackoverflow
 // @namespace    https://github.com/reneeter123
-// @version      1.0.0
+// @version      1.0.1
 // @description  Userscript for redirect to stackoverflow.com from machine-translated sites.
 // @author       ReNeeter
 // @homepageURL  https://github.com/reneeter123/Back2stackoverflow
 // @downloadURL  https://raw.githubusercontent.com/reneeter123/Back2stackoverflow/master/back2stackoverflow.user.js
 // @updateURL    https://raw.githubusercontent.com/reneeter123/Back2stackoverflow/master/back2stackoverflow.user.js
+// @connect      api.stackexchange.com
+// @grant        GM_xmlhttpRequest
 // @noframes
 // @match        https://*.answer-id.com/*
 // @match        https://ask-ubuntu.ru/questions/*/*
 // @match        *://de.askdev.info/questions/*/*
 // @match        https://askdev.io/*questions/*/*
+// @match        https://askvoprosy.com/voprosy/*
 // @match        https://fooobar.com/questions/*/*
 // @match        https://qa-stack.pl/*/*/*
 // @match        https://qastack.cn/*/*/*
@@ -33,6 +36,36 @@
 // @match        https://qastack.vn/*/*/*
 // ==/UserScript==
 
+function searchURLLastPart() {
+    const urlLastPart = location.pathname.split('/').filter(Boolean).pop();
+    const fetchURL = `https://api.stackexchange.com/search?intitle=${urlLastPart}&site=stackoverflow`;
+
+    function redirectUseJson(json) {
+        const item = json.items[0];
+        location.replace(item ? item.link : `https://stackexchange.com/search?q=${urlLastPart}`);
+    }
+
+    try {
+        // For Tampermonkey & Violentmonkey
+        GM_xmlhttpRequest({
+            url: fetchURL,
+            responseType: 'json',
+            onload: redirectUseJson(response.response)
+        });
+    }
+    catch (e) {
+        // For Greasemonkey
+        if (e instanceof ReferenceError) {
+            fetch(fetchURL)
+                .then(response => response.json())
+                .then(json => redirectUseJson(json));
+        }
+        else {
+            throw e;
+        }
+    }
+}
+
 async function redirectToSource() {
     const sourceURL = await (async function () {
         const hostname = location.hostname;
@@ -45,6 +78,9 @@ async function redirectToSource() {
                     { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'show=1' })
                     .then(response => response.text())
                     .then(text => new DOMParser().parseFromString(text, 'text/html').getElementsByClassName('alert-link')[0].href);
+            case 'askvoprosy.com':
+                searchURLLastPart();
+                return;
             case 'qa-stack.pl':
             case 'qastack.cn':
             case 'qastack.co.in':

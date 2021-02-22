@@ -12,6 +12,7 @@ Required [Tampermonkey](https://www.tampermonkey.net/) or [Greasemonkey](https:/
 - ask-ubuntu.ru
 - de.askdev.info
 - askdev.io
+- askvoprosy.com
 - fooobar.com
 - qa-stack.pl
 - qastack.(cn|co.in|com.br|com.de|com.ua|fr|id|in.th|info.tr|it|jp|kr|lk|mx|net.bd|ru|vn)
