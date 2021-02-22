@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Back2stackoverflow
 // @namespace    https://github.com/reneeter123
-// @version      1.0.1
+// @version      1.0.2
 // @description  Userscript for redirect to stackoverflow.com from machine-translated sites.
 // @author       ReNeeter
 // @homepageURL  https://github.com/reneeter123/Back2stackoverflow
@@ -15,6 +15,7 @@
 // @match        *://de.askdev.info/questions/*/*
 // @match        https://askdev.io/*questions/*/*
 // @match        https://askvoprosy.com/voprosy/*
+// @match        *://bildiredi.com/*
 // @match        https://fooobar.com/questions/*/*
 // @match        https://qa-stack.pl/*/*/*
 // @match        https://qastack.cn/*/*/*
@@ -114,6 +115,7 @@ async function redirectToSource() {
                     'answer-id.com': '.v-card__actions > a:nth-of-type(2)',
                     'ask-ubuntu.ru': '.col-sm-4 > .q-source',
                     'de.askdev.info': '.question-text > .a-link',
+                    'bildiredi.com': '.footer_question:last-of-type > a',
                     'fooobar.com': '.question-text > .aa-link'
                 };
 
