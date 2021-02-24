@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Back2stackoverflow
 // @namespace    https://github.com/reneeter123
-// @version      1.0.5
+// @version      1.0.6
 // @description  Userscript for redirect to stackoverflow.com from machine-translated sites.
 // @author       ReNeeter
 // @homepageURL  https://github.com/reneeter123/Back2stackoverflow
@@ -42,6 +42,7 @@ async function redirectToSource() {
         let sourceElement;
         switch (hostname) {
             case 'askdev.io':
+                // Send a post request with parameters to the source acquisition page
                 sourceElement = document.querySelector('.question-text > .aa-link');
 
                 return await fetch(sourceElement.href,
@@ -49,6 +50,7 @@ async function redirectToSource() {
                     .then(response => response.text())
                     .then(text => new DOMParser().parseFromString(text, 'text/html').getElementsByClassName('alert-link')[0].href);
             case 'askvoprosy.com':
+                // Searching part of a URL with Stack Exchange's API
                 const urlLastPart = location.pathname.split('/').filter(Boolean).pop();
 
                 return await fetch(`https://api.stackexchange.com/search?intitle=${urlLastPart}&site=stackoverflow`)
@@ -101,6 +103,7 @@ async function redirectToSource() {
 
     if (sourceURL) {
         if (typeof GM_xmlhttpRequest == 'function') {
+            // For Tampermonkey & Violentmonkey
             GM_xmlhttpRequest({
                 url: sourceURL, onload: response => {
                     if (response.status != 404) location.replace(sourceURL);
@@ -109,6 +112,7 @@ async function redirectToSource() {
             });
         }
         else {
+            // For Greasemonkey
             if (await fetch(sourceURL).then(response => response.ok)) {
                 location.replace(sourceURL);
             }
