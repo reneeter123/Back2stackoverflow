@@ -1,14 +1,12 @@
 // ==UserScript==
 // @name         Back2stackoverflow
 // @namespace    https://github.com/reneeter123
-// @version      1.0.3
+// @version      1.0.4
 // @description  Userscript for redirect to stackoverflow.com from machine-translated sites.
 // @author       ReNeeter
 // @homepageURL  https://github.com/reneeter123/Back2stackoverflow
 // @downloadURL  https://raw.githubusercontent.com/reneeter123/Back2stackoverflow/master/back2stackoverflow.user.js
 // @updateURL    https://raw.githubusercontent.com/reneeter123/Back2stackoverflow/master/back2stackoverflow.user.js
-// @connect      api.stackexchange.com
-// @grant        GM_xmlhttpRequest
 // @noframes
 // @match        https://*.answer-id.com/*
 // @match        https://ask-ubuntu.ru/questions/*/*
@@ -37,31 +35,6 @@
 // @match        https://qastack.vn/*/*/*
 // ==/UserScript==
 
-function searchURLLastPart() {
-    const urlLastPart = location.pathname.split('/').filter(Boolean).pop();
-    const fetchURL = `https://api.stackexchange.com/search?intitle=${urlLastPart}&site=stackoverflow`;
-
-    function redirectUseJson(json) {
-        const item = json.items[0];
-        location.replace(item ? item.link : `https://stackexchange.com/search?q=${urlLastPart}`);
-    }
-
-    try {
-        // For Tampermonkey & Violentmonkey
-        GM_xmlhttpRequest({
-            url: fetchURL,
-            responseType: 'json',
-            onload: redirectUseJson(response.response)
-        });
-    }
-    catch {
-        // For Greasemonkey
-        fetch(fetchURL)
-            .then(response => response.json())
-            .then(json => redirectUseJson(json));
-    }
-}
-
 async function redirectToSource() {
     const sourceURL = await (async function () {
         const hostname = location.hostname;
@@ -75,8 +48,14 @@ async function redirectToSource() {
                     .then(response => response.text())
                     .then(text => new DOMParser().parseFromString(text, 'text/html').getElementsByClassName('alert-link')[0].href);
             case 'askvoprosy.com':
-                searchURLLastPart();
-                return;
+                const urlLastPart = location.pathname.split('/').filter(Boolean).pop();
+
+                return await fetch(`https://api.stackexchange.com/search?intitle=${urlLastPart}&site=stackoverflow`)
+                    .then(response => response.json())
+                    .then(json => {
+                        const item = json.items[0];
+                        return item ? item.link : `https://stackexchange.com/search?q=${urlLastPart}`;
+                    });
             case 'qa-stack.pl':
             case 'qastack.cn':
             case 'qastack.co.in':
