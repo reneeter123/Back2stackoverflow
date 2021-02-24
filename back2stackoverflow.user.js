@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Back2stackoverflow
 // @namespace    https://github.com/reneeter123
-// @version      1.0.2
+// @version      1.0.3
 // @description  Userscript for redirect to stackoverflow.com from machine-translated sites.
 // @author       ReNeeter
 // @homepageURL  https://github.com/reneeter123/Back2stackoverflow
@@ -54,16 +54,11 @@ function searchURLLastPart() {
             onload: redirectUseJson(response.response)
         });
     }
-    catch (e) {
+    catch {
         // For Greasemonkey
-        if (e instanceof ReferenceError) {
-            fetch(fetchURL)
-                .then(response => response.json())
-                .then(json => redirectUseJson(json));
-        }
-        else {
-            throw e;
-        }
+        fetch(fetchURL)
+            .then(response => response.json())
+            .then(json => redirectUseJson(json));
     }
 }
 
