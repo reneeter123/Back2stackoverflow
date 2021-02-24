@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Back2stackoverflow
 // @namespace    https://github.com/reneeter123
-// @version      1.0.4
+// @version      1.0.5
 // @description  Userscript for redirect to stackoverflow.com from machine-translated sites.
 // @author       ReNeeter
 // @homepageURL  https://github.com/reneeter123/Back2stackoverflow
 // @downloadURL  https://raw.githubusercontent.com/reneeter123/Back2stackoverflow/master/back2stackoverflow.user.js
 // @updateURL    https://raw.githubusercontent.com/reneeter123/Back2stackoverflow/master/back2stackoverflow.user.js
+// @grant        GM_xmlhttpRequest
 // @noframes
 // @match        https://*.answer-id.com/*
 // @match        https://ask-ubuntu.ru/questions/*/*
@@ -98,7 +99,24 @@ async function redirectToSource() {
         }
     })();
 
-    if (sourceURL) location.replace(sourceURL);
+    if (sourceURL) {
+        if (typeof GM_xmlhttpRequest == 'function') {
+            GM_xmlhttpRequest({
+                url: sourceURL, onload: response => {
+                    if (response.status != 404) location.replace(sourceURL);
+                    else alert('Back2stackoverflow:\nSource not found');
+                }
+            });
+        }
+        else {
+            if (await fetch(sourceURL).then(response => response.ok)) {
+                location.replace(sourceURL);
+            }
+            else {
+                alert('Back2stackoverflow:\nSource not found');
+            }
+        }
+    }
 }
 
 'use strict';
