@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Back2stackoverflow
 // @namespace    https://github.com/reneeter123
-// @version      1.0.6
+// @version      1.0.7
 // @description  Userscript for redirect to stackoverflow.com from machine-translated sites.
 // @author       ReNeeter
 // @homepageURL  https://github.com/reneeter123/Back2stackoverflow
@@ -77,6 +77,7 @@ async function redirectToSource() {
             case 'qastack.net.bd':
             case 'qastack.ru':
             case 'qastack.vn':
+                // Replace part of the URL of the source
                 sourceElement = document.querySelector('.text-muted > a:last-of-type');
 
                 if (sourceElement) {
@@ -88,6 +89,7 @@ async function redirectToSource() {
                     return;
                 }
             default:
+                // Select the source element
                 const selectors = {
                     'answer-id.com': '.v-card__actions > a:nth-of-type(2)',
                     'ask-ubuntu.ru': '.col-sm-4 > .q-source',
@@ -101,24 +103,18 @@ async function redirectToSource() {
         }
     })();
 
+    // Determine if the source exists
     if (sourceURL) {
+        function redirectIf(isFound) {
+            isFound ? location.replace(sourceURL) : alert('Back2stackoverflow:\nSource not found');
+        }
         if (typeof GM_xmlhttpRequest == 'function') {
             // For Tampermonkey & Violentmonkey
-            GM_xmlhttpRequest({
-                url: sourceURL, onload: response => {
-                    if (response.status != 404) location.replace(sourceURL);
-                    else alert('Back2stackoverflow:\nSource not found');
-                }
-            });
+            GM_xmlhttpRequest({ url: sourceURL, onload: response => redirectIf(response.status != 404) });
         }
         else {
             // For Greasemonkey
-            if (await fetch(sourceURL).then(response => response.ok)) {
-                location.replace(sourceURL);
-            }
-            else {
-                alert('Back2stackoverflow:\nSource not found');
-            }
+            redirectIf(await fetch(sourceURL).then(response => response.ok));
         }
     }
 }
