@@ -18,7 +18,7 @@ Required [Tampermonkey](https://www.tampermonkey.net/) or [Greasemonkey](https:/
 - qa-stack.pl
 - qastack.(cn|co.in|com.br|com.de|com.ua|fr|id|in.th|info.tr|it|jp|kr|lk|mx|net.bd|ru|vn)
 
-## Unsupported sites
+## Supported sites (use translator)
 
 - qa.1r1g.com
 - askubuntu.ru
