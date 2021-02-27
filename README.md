@@ -16,6 +16,7 @@ Required [Tampermonkey](https://www.tampermonkey.net/) or [Greasemonkey](https:/
 - bildiredi.com
 - ciupacabra.com
 - code-examples.net
+- codeindex.ru
 - fooobar.com
 - code.i-harness.com
 - qa-stack.pl
