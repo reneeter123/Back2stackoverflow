@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Back2stackoverflow
 // @namespace    https://github.com/reneeter123
-// @version      1.0.10
+// @version      1.0.11
 // @description  Userscript for redirect to stackoverflow.com from machine-translated sites.
 // @author       ReNeeter
 // @homepageURL  https://github.com/reneeter123/Back2stackoverflow
@@ -41,7 +41,8 @@
 // @match        https://qastack.vn/*/*/*
 // ==/UserScript==
 
-function lastPathPart() {
+function getURLLastPart() {
+    // Return the last part of the URL
     return location.pathname.split('/').filter(Boolean).pop();
 }
 
@@ -102,9 +103,9 @@ async function redirectToSource() {
                     .then(text => new DOMParser().parseFromString(text, 'text/html').getElementsByClassName('alert-link')[0].href);
             case 'askvoprosy.com' == hostname:
                 // Search for part of the URL in Stack Exchange
-                return await searchStackoverflow(lastPathPart());
+                return await searchStackoverflow(getURLLastPart());
             case 'code-examples.net' == hostname:
-                return `https://stackoverflow.com/questions/${parseInt(lastPathPart(), 16)}`;
+                return `https://stackoverflow.com/questions/${parseInt(getURLLastPart(), 16)}`;
             case 'qa-stack.pl' == hostname:
             case 'qastack.cn' == hostname:
             case 'qastack.co.in' == hostname:
