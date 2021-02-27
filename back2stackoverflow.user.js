@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Back2stackoverflow
 // @namespace    https://github.com/reneeter123
-// @version      1.0.8
+// @version      1.0.9
 // @description  Userscript for redirect to stackoverflow.com from machine-translated sites.
 // @author       ReNeeter
 // @homepageURL  https://github.com/reneeter123/Back2stackoverflow
@@ -17,6 +17,7 @@
 // @match        https://askubuntu.ru/questions/*
 // @match        https://askvoprosy.com/voprosy/*
 // @match        *://bildiredi.com/*
+// @match        https://*.bilee.com/*.html
 // @match        https://fooobar.com/questions/*/*
 // @match        https://qa-stack.pl/*/*/*
 // @match        https://qastack.cn/*/*/*
@@ -53,16 +54,18 @@ async function redirectToSource() {
         const hostname = location.hostname;
         let selectors;
         let sourceElement;
-        switch (hostname) {
-            case 'qa.1r1g.com':
-            case 'askubuntu.ru':
+        switch (true) {
+            case 'qa.1r1g.com' == hostname:
+            case 'askubuntu.ru' == hostname:
+            case hostname.endsWith('bilee.com'):
                 // Search using Google Translate
                 selectors = {
                     'qa.1r1g.com': '.col a',
-                    'askubuntu.ru': '.catalog-container > .block-title'
+                    'askubuntu.ru': '.catalog-container > .block-title',
+                    'bilee.com': 'a > .text-uppercase'
                 };
 
-                sourceElement = document.querySelector(selectors[hostname]);
+                sourceElement = document.querySelector(selectors[Object.keys(selectors).find(value => hostname.endsWith(value))]);
 
                 const postURL = 'https://www.google.com/async/translate?';
                 const postHeader = { 'Content-Type': 'application/x-www-form-urlencoded' };
@@ -83,7 +86,7 @@ async function redirectToSource() {
                 }
 
                 return;
-            case 'askdev.io':
+            case 'askdev.io' == hostname:
                 // Send a post request with parameters to the source acquisition page
                 sourceElement = document.querySelector('.question-text > .aa-link');
 
@@ -91,27 +94,27 @@ async function redirectToSource() {
                     { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'show=1' })
                     .then(response => response.text())
                     .then(text => new DOMParser().parseFromString(text, 'text/html').getElementsByClassName('alert-link')[0].href);
-            case 'askvoprosy.com':
+            case 'askvoprosy.com' == hostname:
                 // Search for part of the URL in Stack Exchange
                 return await searchStackoverflow(location.pathname.split('/').filter(Boolean).pop());
-            case 'qa-stack.pl':
-            case 'qastack.cn':
-            case 'qastack.co.in':
-            case 'qastack.com.br':
-            case 'qastack.com.de':
-            case 'qastack.com.ua':
-            case 'qastack.fr':
-            case 'qastack.id':
-            case 'qastack.in.th':
-            case 'qastack.info.tr':
-            case 'qastack.it':
-            case 'qastack.jp':
-            case 'qastack.kr':
-            case 'qastack.lk':
-            case 'qastack.mx':
-            case 'qastack.net.bd':
-            case 'qastack.ru':
-            case 'qastack.vn':
+            case 'qa-stack.pl' == hostname:
+            case 'qastack.cn' == hostname:
+            case 'qastack.co.in' == hostname:
+            case 'qastack.com.br' == hostname:
+            case 'qastack.com.de' == hostname:
+            case 'qastack.com.ua' == hostname:
+            case 'qastack.fr' == hostname:
+            case 'qastack.id' == hostname:
+            case 'qastack.in.th' == hostname:
+            case 'qastack.info.tr' == hostname:
+            case 'qastack.it' == hostname:
+            case 'qastack.jp' == hostname:
+            case 'qastack.kr' == hostname:
+            case 'qastack.lk' == hostname:
+            case 'qastack.mx' == hostname:
+            case 'qastack.net.bd' == hostname:
+            case 'qastack.ru' == hostname:
+            case 'qastack.vn' == hostname:
                 // Replace part of the URL of the source
                 sourceElement = document.querySelector('.text-muted > a:last-of-type');
 

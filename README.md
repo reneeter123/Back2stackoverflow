@@ -22,6 +22,7 @@ Required [Tampermonkey](https://www.tampermonkey.net/) or [Greasemonkey](https:/
 
 - qa.1r1g.com
 - askubuntu.ru
+- bilee.com
 
 ## Thanks
 
