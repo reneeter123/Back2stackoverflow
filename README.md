@@ -15,6 +15,7 @@ Required [Tampermonkey](https://www.tampermonkey.net/) or [Greasemonkey](https:/
 - askvoprosy.com
 - bildiredi.com
 - ciupacabra.com
+- code-examples.net
 - fooobar.com
 - qa-stack.pl
 - qastack.(cn|co.in|com.br|com.de|com.ua|fr|id|in.th|info.tr|it|jp|kr|lk|mx|net.bd|ru|vn)
