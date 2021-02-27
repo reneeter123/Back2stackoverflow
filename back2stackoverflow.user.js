@@ -18,6 +18,7 @@
 // @match        https://askvoprosy.com/voprosy/*
 // @match        *://bildiredi.com/*
 // @match        https://*.bilee.com/*.html
+// @match        *://ciupacabra.com/*
 // @match        https://fooobar.com/questions/*/*
 // @match        https://qa-stack.pl/*/*/*
 // @match        https://qastack.cn/*/*/*
@@ -133,6 +134,7 @@ async function redirectToSource() {
                     'ask-ubuntu.ru': '.col-sm-4 > .q-source',
                     'de.askdev.info': '.question-text > .a-link',
                     'bildiredi.com': '.footer_question:last-of-type > a',
+                    'ciupacabra.com': '.footer_question:last-of-type > a',
                     'fooobar.com': '.question-text > .aa-link'
                 };
 
